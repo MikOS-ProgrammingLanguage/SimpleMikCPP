@@ -1,0 +1,7 @@
+-Wall
+-lstdc++fs
+-Iinclude
+-Ipreprocessor/include
+-Ilexer/include
+-Ierrors/include
+-Iparser/include
