@@ -18,8 +18,8 @@ OUTPUT = mic
 $(OUTPUT): $(OBJS) $(OBJS_UTILS) $(OBJS_PREPROCESSOR) $(OBJS_LEXER) $(OBJS_ERROR) $(OBJS_PARSER)
 	$(CC) $(CFLAGS) $(patsubst %.o,build/%.o,$^) -lstdc++fs -o $@
 
-format: $(SRC_UTILS) $(SRC_PREPROCESSOR) $(SRC_LEXER) $(SRC_ERROR) $(SRC_PARSER)
-	clang-format $< --style=LLVM
+format:
+	clang-format -i $(SRC_UTILS) $(SRC_PREPROCESSOR) $(SRC_LEXER) $(SRC_ERROR) $(SRC_PARSER) --style=LLVM
 
 clean:
 	rm $(patsubst %.o,build/%.o,$(OBJS) $(OBJS_UTILS) $(OBJS_PREPROCESSOR) $(OBJS_LEXER) $(OBJS_ERROR) $(OBJS_PARSER)) $(OUTPUT)
