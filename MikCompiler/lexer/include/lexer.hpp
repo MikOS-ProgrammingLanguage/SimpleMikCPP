@@ -164,6 +164,7 @@ const static vector<char> LEGAL_BINARY_CHARACTERS = { '0', '1' };
 struct Token {
     string file_name;
     int line_number;
+    int idx;
     int token_type;
     string value;
     int imm_value;
@@ -173,7 +174,7 @@ struct Token {
 class Lexer {
     public:
         Lexer(string text);
-        vector<Token> lex(void);
+        pair<vector<Token>, stack<pair<string, int> > > lex(void);
 
         vector<Token> tokens;
 

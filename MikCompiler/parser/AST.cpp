@@ -1,4 +1,18 @@
 #include <AST.hpp>
+#include <utils.hpp>
+
+// Type
+Type::Type(int _base_type, string _custom_type, int _dimensions) {
+    this->base_type = _base_type;
+    this->custom_type = _custom_type;
+    this->dimensions = _dimensions;
+}
+
+// VariableAssignment
+VariableAssignment::VariableAssignment() : type(Type(TYPE_INVALID, "", 0)) {
+    this->is_declared = false;
+    this->is_bounded  = false;
+}
 
 // AST
 AST::AST(vector<FirstClass> _nodes) {
@@ -6,10 +20,11 @@ AST::AST(vector<FirstClass> _nodes) {
     this->nodes = _nodes;
 }
 
-Function::Function(bool _declared, string _function_name, pair<vector<Assignment>, vector<Type> > _arguments
+// Function
+Function::Function(bool _declared, string _function_name, pair<vector<VariableAssignment>, vector<Type> > _arguments
                 , Type _return_type, AST _body, vector<int> _behavioural_descriptors
-                , map<string, Assignment> _internaly_known_variables, map<string, Function> _internaly_known_functions
-                , map<string, Struct> _internaly_known_structs) : body(_body.nodes) {
+                , map<string, VariableAssignment> _internaly_known_variables, map<string, Function> _internaly_known_functions
+                , map<string, Struct> _internaly_known_structs) : return_type(_return_type), body(_body.nodes)  {
     this->declared                  = _declared;
     this->function_name             = _function_name;
     this->arguments                 = _arguments;
@@ -21,4 +36,4 @@ Function::Function(bool _declared, string _function_name, pair<vector<Assignment
     this->internaly_known_structs   = _internaly_known_structs;
 }
 
-Function::Function() : body(vector<FirstClass>()) {}
+Function::Function() : return_type(-1, "", 0), body(vector<FirstClass>()) {}

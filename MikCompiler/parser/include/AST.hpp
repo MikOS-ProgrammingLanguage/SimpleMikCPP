@@ -11,13 +11,6 @@ enum {
     NT_AST,
 };
 
-/* OTHER */
-class Type {
-    public:
-        int base_type; // built-in types
-        string CustomType; // like structs, etc...
-};
-
 // First class object interface
 class FirstClass {
     public:
@@ -26,6 +19,22 @@ class FirstClass {
 
 // Second class object interface
 class SecondClass {
+};
+
+/* OTHER */
+class Type {
+    public:
+        Type(int _base_type, string _cutsom_type, int _dimensions);
+        int base_type; // built-in types
+        int dimensions; // dimensions for arrays (0 is for no arrays)
+        string custom_type; // like structs, etc...
+};
+
+class Boundary : public SecondClass {
+    public:
+        bool option;
+        SecondClass lower_bound;
+        SecondClass upper_bound;
 };
 
 /* FIRST CLASS */
@@ -58,7 +67,18 @@ class VariableAlteration : public FirstClass {
 };
 
 // Assignment (Here the same node as for array assignments)
-class Assignment : public FirstClass {
+class VariableAssignment : public FirstClass {
+    public:
+        VariableAssignment();
+
+        bool is_declared;
+        bool is_bounded;
+
+        string name;
+        Type type;
+        SecondClass assigned_expression;
+        vector<SecondClass> array_length_expressions;
+        Boundary bound;
 };
 
 // function like: mikf f(int x) -> int {return x*x}
@@ -66,18 +86,18 @@ class Function : public FirstClass {
     public:
         bool declared;
         string function_name;
-        pair<vector<Assignment>, vector<Type> > arguments; // arguments to the function represented by the code snippet defining it and it's type respectively
+        pair<vector<VariableAssignment>, vector<Type> > arguments; // arguments to the function represented by the code snippet defining it and it's type respectively
         Type return_type;
         AST body;
         vector<int> behavioural_descriptors;
-        map<string, Assignment> internaly_known_variables;
+        map<string, VariableAssignment> internaly_known_variables;
         map<string, Function> internaly_known_functions;
         map<string, Struct> internaly_known_structs;
 
         // construct all at once
-        Function(bool _declared, string _function_name, pair<vector<Assignment>, vector<Type> > _arguments
+        Function(bool _declared, string _function_name, pair<vector<VariableAssignment>, vector<Type> > _arguments
                 , Type _return_type, AST _body, vector<int> _behavioural_descriptors
-                , map<string, Assignment> _internaly_known_variables, map<string, Function> _internaly_known_functions
+                , map<string, VariableAssignment> _internaly_known_variables, map<string, Function> _internaly_known_functions
                 , map<string, Struct> _internaly_known_structs);
         Function(); // construct later on
 };

@@ -33,6 +33,7 @@ void Lexer::lex_string_token() {
         this->tokens.push_back(Token{
             .file_name    = this->positions_in_files.top().first,
             .line_number  = this->positions_in_files.top().second,
+            .idx          = this->current_index,
             .token_type   = TT_STRING_LITERAL,
             .value        = res,
         });
@@ -47,6 +48,7 @@ void Lexer::lex_id_token() {
     this->tokens.push_back(Token{
         .file_name    = this->positions_in_files.top().first,
         .line_number  = this->positions_in_files.top().second,
+        .idx          = this->current_index,
         .token_type   = TT_ID,
         .value        = res,
     });
@@ -96,13 +98,14 @@ void Lexer::lex_number_token(bool hex_prefix=false, bool bin_prefix=false) {
     this->tokens.push_back(Token{
         .file_name    = this->positions_in_files.top().first,
         .line_number  = this->positions_in_files.top().second,
+        .idx          = this->current_index,
         .token_type   = token_type,
         .value        = res,
     });
     this->current_index--;
 }
 
-vector<Token> Lexer::lex(void) {
+pair<vector<Token>, stack<pair<string, int> > > Lexer::lex(void) {
     while (this->current_character != '\0') {
         // Analyze each character
         switch (current_character) {
@@ -124,6 +127,7 @@ vector<Token> Lexer::lex(void) {
                         this->tokens.push_back(Token{
                             .file_name    = this->positions_in_files.top().first,
                             .line_number  = this->positions_in_files.top().second,
+                            .idx          = this->current_index,
                             .token_type   = TT_LESS_THAN_OR_EQUAL,
                         });
                     else if (current_character == '<')
@@ -131,6 +135,7 @@ vector<Token> Lexer::lex(void) {
                         this->tokens.push_back(Token{
                             .file_name    = this->positions_in_files.top().first,
                             .line_number  = this->positions_in_files.top().second,
+                            .idx          = this->current_index,
                             .token_type   = TT_LEFT_BITSHIFT,
                         });
                     else {
@@ -138,6 +143,7 @@ vector<Token> Lexer::lex(void) {
                         this->tokens.push_back(Token{
                             .file_name    = this->positions_in_files.top().first,
                             .line_number  = this->positions_in_files.top().second,
+                            .idx          = this->current_index,
                             .token_type   = TT_LESS_THAN,
                         });
 
@@ -154,6 +160,7 @@ vector<Token> Lexer::lex(void) {
                         this->tokens.push_back(Token{
                             .file_name    = this->positions_in_files.top().first,
                             .line_number  = this->positions_in_files.top().second,
+                            .idx          = this->current_index,
                             .token_type   = TT_GREATER_THAN_OR_EQUAL,
                         });
                     else if (current_character == '<')
@@ -161,6 +168,7 @@ vector<Token> Lexer::lex(void) {
                         this->tokens.push_back(Token{
                             .file_name    = this->positions_in_files.top().first,
                             .line_number  = this->positions_in_files.top().second,
+                            .idx          = this->current_index,
                             .token_type   = TT_RIGHT_BITSHIFT,
                         });
                     else {
@@ -168,6 +176,7 @@ vector<Token> Lexer::lex(void) {
                         this->tokens.push_back(Token{
                             .file_name    = this->positions_in_files.top().first,
                             .line_number  = this->positions_in_files.top().second,
+                            .idx          = this->current_index,
                             .token_type   = TT_GREATER_THAN,
                         });
 
@@ -184,6 +193,7 @@ vector<Token> Lexer::lex(void) {
                         this->tokens.push_back(Token{
                             .file_name    = this->positions_in_files.top().first,
                             .line_number  = this->positions_in_files.top().second,
+                            .idx          = this->current_index,
                             .token_type   = TT_EQUAL,
                         });
                     else {
@@ -191,6 +201,7 @@ vector<Token> Lexer::lex(void) {
                         this->tokens.push_back(Token{
                             .file_name    = this->positions_in_files.top().first,
                             .line_number  = this->positions_in_files.top().second,
+                            .idx          = this->current_index,
                             .token_type   = TT_ASSIGNMENT,
                         });
 
@@ -206,6 +217,7 @@ vector<Token> Lexer::lex(void) {
                         this->tokens.push_back(Token{
                             .file_name    = this->positions_in_files.top().first,
                             .line_number  = this->positions_in_files.top().second,
+                            .idx          = this->current_index,
                             .token_type   = TT_AND,
                         });
                     else throw_error(UNEXPECTED_TOKEN, *this);
@@ -220,6 +232,7 @@ vector<Token> Lexer::lex(void) {
                         this->tokens.push_back(Token{
                             .file_name    = this->positions_in_files.top().first,
                             .line_number  = this->positions_in_files.top().second,
+                            .idx          = this->current_index,
                             .token_type   = TT_NOT_EQUAL,
                         });
                     else {
@@ -227,6 +240,7 @@ vector<Token> Lexer::lex(void) {
                         this->tokens.push_back(Token{
                             .file_name    = this->positions_in_files.top().first,
                             .line_number  = this->positions_in_files.top().second,
+                            .idx          = this->current_index,
                             .token_type   = TT_NOT,
                         });
 
@@ -243,6 +257,7 @@ vector<Token> Lexer::lex(void) {
                         this->tokens.push_back(Token{
                             .file_name    = this->positions_in_files.top().first,
                             .line_number  = this->positions_in_files.top().second,
+                            .idx          = this->current_index,
                             .token_type   = TT_OR,
                         });
                     else throw_error(UNEXPECTED_TOKEN, *this);
@@ -256,12 +271,14 @@ vector<Token> Lexer::lex(void) {
                         this->tokens.push_back(Token{
                             .file_name    = this->positions_in_files.top().first,
                             .line_number  = this->positions_in_files.top().second,
+                            .idx          = this->current_index,
                             .token_type   = TT_PLUS_EQUALS,
                         });
                     else {
                         this->tokens.push_back(Token{
                             .file_name    = this->positions_in_files.top().first,
                             .line_number  = this->positions_in_files.top().second,
+                            .idx          = this->current_index,
                             .token_type   = TT_PLUS,
                         });
 
@@ -278,12 +295,14 @@ vector<Token> Lexer::lex(void) {
                         this->tokens.push_back(Token{
                             .file_name    = this->positions_in_files.top().first,
                             .line_number  = this->positions_in_files.top().second,
+                            .idx          = this->current_index,
                             .token_type   = TT_MINUS_EQUALS,
                         });
                     else {
                         this->tokens.push_back(Token{
                             .file_name    = this->positions_in_files.top().first,
                             .line_number  = this->positions_in_files.top().second,
+                            .idx          = this->current_index,
                             .token_type   = TT_MINUS,
                         });
 
@@ -300,12 +319,14 @@ vector<Token> Lexer::lex(void) {
                         this->tokens.push_back(Token{
                             .file_name    = this->positions_in_files.top().first,
                             .line_number  = this->positions_in_files.top().second,
+                            .idx          = this->current_index,
                             .token_type   = TT_TIMES_EQUALS,
                         });
                     else {
                         this->tokens.push_back(Token{
                             .file_name    = this->positions_in_files.top().first,
                             .line_number  = this->positions_in_files.top().second,
+                            .idx          = this->current_index,
                             .token_type   = TT_ASTERISK,
                         });
 
@@ -322,6 +343,7 @@ vector<Token> Lexer::lex(void) {
                         this->tokens.push_back(Token{
                             .file_name    = this->positions_in_files.top().first,
                             .line_number  = this->positions_in_files.top().second,
+                            .idx          = this->current_index,
                             .token_type   = TT_OVER_EQUALS,
                         });
                     else if (current_character == '/')
@@ -349,6 +371,7 @@ vector<Token> Lexer::lex(void) {
                         this->tokens.push_back(Token{
                             .file_name    = this->positions_in_files.top().first,
                             .line_number  = this->positions_in_files.top().second,
+                            .idx          = this->current_index,
                             .token_type   = TT_SLASH,
                         });
 
@@ -361,6 +384,7 @@ vector<Token> Lexer::lex(void) {
                     this->tokens.push_back(Token{
                         .file_name    = this->positions_in_files.top().first,
                         .line_number  = this->positions_in_files.top().second,
+                        .idx          = this->current_index,
                         .token_type   = TT_PERCENT,
                     });
                 } break;
@@ -370,6 +394,7 @@ vector<Token> Lexer::lex(void) {
                     this->tokens.push_back(Token{
                         .file_name    = this->positions_in_files.top().first,
                         .line_number  = this->positions_in_files.top().second,
+                        .idx          = this->current_index,
                         .token_type   = TT_COMMA,
                     });
                 } break;
@@ -379,6 +404,7 @@ vector<Token> Lexer::lex(void) {
                     this->tokens.push_back(Token{
                         .file_name    = this->positions_in_files.top().first,
                         .line_number  = this->positions_in_files.top().second,
+                        .idx          = this->current_index,
                         .token_type   = TT_DOT,
                     });
                 } break;
@@ -388,6 +414,7 @@ vector<Token> Lexer::lex(void) {
                     this->tokens.push_back(Token{
                         .file_name    = this->positions_in_files.top().first,
                         .line_number  = this->positions_in_files.top().second,
+                        .idx          = this->current_index,
                         .token_type   = TT_BITWISE_XOR,
                     });
                 } break;
@@ -397,6 +424,7 @@ vector<Token> Lexer::lex(void) {
                     this->tokens.push_back(Token{
                         .file_name    = this->positions_in_files.top().first,
                         .line_number  = this->positions_in_files.top().second,
+                        .idx          = this->current_index,
                         .token_type   = TT_OPENING_PARENTHESIS,
                     });
                 } break;
@@ -406,6 +434,7 @@ vector<Token> Lexer::lex(void) {
                     this->tokens.push_back(Token{
                         .file_name    = this->positions_in_files.top().first,
                         .line_number  = this->positions_in_files.top().second,
+                        .idx          = this->current_index,
                         .token_type   = TT_CLOSING_PARENTHESIS,
                     });
                 } break;
@@ -415,6 +444,7 @@ vector<Token> Lexer::lex(void) {
                     this->tokens.push_back(Token{
                         .file_name    = this->positions_in_files.top().first,
                         .line_number  = this->positions_in_files.top().second,
+                        .idx          = this->current_index,
                         .token_type   = TT_OPENING_BRACKET,
                     });
                 } break;
@@ -424,6 +454,7 @@ vector<Token> Lexer::lex(void) {
                     this->tokens.push_back(Token{
                         .file_name    = this->positions_in_files.top().first,
                         .line_number  = this->positions_in_files.top().second,
+                        .idx          = this->current_index,
                         .token_type   = TT_CLOSING_BRACKET,
                     });
                 } break;
@@ -433,6 +464,7 @@ vector<Token> Lexer::lex(void) {
                     this->tokens.push_back(Token{
                         .file_name    = this->positions_in_files.top().first,
                         .line_number  = this->positions_in_files.top().second,
+                        .idx          = this->current_index,
                         .token_type   = TT_OPENING_BRACE,
                     });
                 } break;
@@ -442,6 +474,7 @@ vector<Token> Lexer::lex(void) {
                     this->tokens.push_back(Token{
                         .file_name    = this->positions_in_files.top().first,
                         .line_number  = this->positions_in_files.top().second,
+                        .idx          = this->current_index,
                         .token_type   = TT_CLOSING_BRACE,
                     });
                 } break;
@@ -503,6 +536,7 @@ vector<Token> Lexer::lex(void) {
                     this->tokens.push_back(Token{
                         .file_name    = this->positions_in_files.top().first,
                         .line_number  = this->positions_in_files.top().second,
+                        .idx          = this->current_index,
                         .token_type   = TT_ASCII_LITERAL,
                         .value        = string(1, this->current_character),
                     });
@@ -565,6 +599,6 @@ vector<Token> Lexer::lex(void) {
         }
         this->advance();
     }
-
-    return this->tokens;
+    
+    return pair<vector<Token>, stack<pair<string, int> > >(this->tokens, this->positions_in_files);
 }

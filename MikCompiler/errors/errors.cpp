@@ -31,6 +31,36 @@ void print_error_location(Lexer state) {
     cout << "\r" << BLUE << "\tIn: " << state.positions_in_files.top().first << "\n\t" << whitespace_buffer << " |\n\t" << to_string(state.positions_in_files.top().second) << " | " << DEFAULT << line_to_print << "\n\t" << BLUE << whitespace_buffer << " | " << endl;
 }
 
+void print_error_location(Parser state) {
+    string whitespace_buffer = string(state.current_token.line_number, ' ');
+    string line_to_print;
+    state.current_token.idx--;
+
+    // get line_to_print
+    // iterate back from the current character
+    int char_idx = state.current_token.idx;
+    char current_char;
+    for (char c = state.text[state.current_token.idx]; c != '\n' && state.current_token.idx >= 0; state.current_token.idx-- ) c = state.text[state.current_token.idx];
+    
+    if (state.text[state.current_token.idx+1] == '\n') {
+        state.current_token.idx+=2;
+        current_char = state.text[state.current_token.idx];
+    } else {
+        state.current_token.idx++;
+        current_char = state.text[state.current_token.idx];
+    }
+
+    for (; state.current_token.idx < state.text.size() && current_char != '\n'; current_char = state.text[++state.current_token.idx]) {
+        if (char_idx == state.current_token.idx) line_to_print += RED;
+
+        line_to_print += current_char;
+
+        if (char_idx == state.current_token.idx) line_to_print += DEFAULT;
+    }
+
+    cout << "\r" << BLUE << "\tIn: " << state.current_token.file_name << "\n\t" << whitespace_buffer << " |\n\t" << to_string(state.current_token.line_number) << " | " << DEFAULT << line_to_print << "\n\t" << BLUE << whitespace_buffer << " | " << endl;
+}
+
 void print_error_location(string line, int line_number, string path) {
     string whitespace_buffer = string(to_string(line_number).size(), ' ');
     cout << "\r" << BLUE << "\tIn: " << path << "\n\t" << whitespace_buffer << " |\n\t" << to_string(line_number) << " | " << RED << line << "\n\t" << whitespace_buffer << " | " << endl;
@@ -127,6 +157,39 @@ void throw_error(int err_code, Lexer state) {
                 cout << RED << "\n\r[ERROR " << to_string(OPENING_PARENTHESIS_EXPECTED_IN_FILE_COMPILER_DIRECTIVE) << "] An opening parenthesis was expected in the @file compiler directive:\n";
                 print_error_location(state);
                 cout << GREEN << "\nRead more about this error: " << OPENING_PARENTHESIS_EXPECTED_IN_FILE_COMPILER_DIRECTIVE_LINK << "\n" << DEFAULT << endl;
+                exit(-1);
+            } break;
+    }
+}
+
+void throw_error(int err_code, Parser state) {
+    switch (err_code) {
+        case EXPECTED_IDENTIFIER_FOR_FIRST_CLASS_EXPRESSION:
+            {
+                cout << RED << "\n\r[ERROR " << to_string(EXPECTED_IDENTIFIER_FOR_FIRST_CLASS_EXPRESSION) << "] An identifier is expected in a first class expression:\n";
+                print_error_location(state);
+                cout << GREEN << "\nRead more about this error: " << EXPECTED_IDENTIFIER_FOR_FIRST_CLASS_EXPRESSION_LINK << "\n" << DEFAULT << endl;
+                exit(-1);
+            } break;
+        case EXPECTED_VARIABLE_NAME_AFTER_TYPE:
+            {
+                cout << RED << "\n\r[ERROR " << to_string(EXPECTED_VARIABLE_NAME_AFTER_TYPE) << " A name was expected after a type in the definition/declaration of a variable:\n";
+                print_error_location(state);
+                cout << GREEN << "\nRead more about this error: " << EXPECTED_VARIABLE_NAME_AFTER_TYPE_LINK << "\n" << DEFAULT << endl;
+                exit(-1);
+            } break;
+        case EXPECTED_BOUND_OR_ARRAY_DEFINITION_OR_ASSIGNMENT_AFTER_VARIABLE_NAME:
+            {
+                cout << RED << "\n\r[ERROR " << to_string(EXPECTED_BOUND_OR_ARRAY_DEFINITION_OR_ASSIGNMENT_AFTER_VARIABLE_NAME) << "A boundary ({}), array ([]), or assignment (=) was expected after a variable name in the definition/declaration of a variable:\n";
+                print_error_location(state);
+                cout << GREEN << "\nRead more about this error: " << EXPECTED_BOUND_OR_ARRAY_DEFINITION_OR_ASSIGNMENT_AFTER_VARIABLE_NAME_LINK << "\n" << DEFAULT << endl;
+                exit(-1);
+            } break;
+        case EXPECTED_NEWLINE_BEFORE_NEW_FIRST_CLASS_EXPRESSION:
+            {
+                cout << RED << "\n\r[ERROR " << to_string(EXPECTED_NEWLINE_BEFORE_NEW_FIRST_CLASS_EXPRESSION) << " A new line was expected after the end of a first class expression:\n";
+                print_error_location(state);
+                cout << GREEN << "\nRead more about this error: " << EXPECTED_NEWLINE_BEFORE_NEW_FIRST_CLASS_EXPRESSION_LINK << "\n" << DEFAULT << endl;
                 exit(-1);
             } break;
     }

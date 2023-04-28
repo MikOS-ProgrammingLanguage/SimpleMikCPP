@@ -1,12 +1,17 @@
 #include <experimental/bits/fs_fwd.h>
+#include <utils.hpp>
 #include <preprocessor.hpp>
 #include <lexer.hpp>
 #include <parser.hpp>
 
 int main(void) {
-    string text = "0 123456 0.5 9.5 0b111 0xFF 0b1F011\n\"Hello world!\"@file(\"hello.mik\")\n 'ab'\n@fend";
-    Preprocessor p(text, "./main.mik");
-    Lexer l(text);
-    vector<Token> t = l.lex();
+    init_utils();
 
+    string text = "int i = 10 int x = i+5";
+    AST result(vector<FirstClass>(0));
+
+    Preprocessor preprocessor(text, "./main.mik");
+    Lexer lexer(text);
+    auto a = lexer.lex();
+    Parser parser(a.first, a.second, text, result);
 }
