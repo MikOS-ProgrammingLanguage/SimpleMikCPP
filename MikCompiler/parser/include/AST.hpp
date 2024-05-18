@@ -1,4 +1,9 @@
+#include "lexer.hpp"
+#include <bitset>
 #include <map>
+#include <memory>
+#include <string>
+#include <valarray>
 #ifndef MIK_AST_H
 
 #include <iostream>
@@ -24,9 +29,14 @@ class SecondClass {
 /* OTHER */
 class Type {
     public:
-        Type(int _base_type, string _cutsom_type, int _dimensions);
-        int base_type; // built-in types
-        int dimensions; // dimensions for arrays (0 is for no arrays)
+        Type(int _base_type, string _cutsom_type, pair<int, int> _dimensions);
+        friend bool operator==(const Type& lhs, const Type& rhs); // compares lhs to rhs (all parameters in lhr and rhs have to be equal, however, lhs.base_type and rhs.base_type only need satisfy lhs.base_type >= rhs.base_type)
+        friend bool operator!=(const Type& lhs, const Type& rhs); // = !(A==B)
+        friend bool operator<=(const Type& lhs, const Type& rhs); // compares lhs to rhs (all parameters in lhr and rhs have to be equal, however, lhs.base_type and rhs.base_type only need satisfy lhs.base_type <= rhs.base_type)
+        friend bool operator>=(const Type& lhs, const Type& rhs); // compares lhs to rhs (all parameters in lhr and rhs have to be equal, however, lhs.base_type and rhs.base_type only need satisfy lhs.base_type >= rhs.base_type)
+        friend bool operator>(const Type& lhs, const Type& rhs);
+        int base_type; // built-in types (invalid type (=0) for custom types)
+        pair<int, int> dimensions; // rows x columns (like matrix)
         string custom_type; // like structs, etc...
 };
 
@@ -110,21 +120,31 @@ class FirstClassFunctionCall : public FirstClass {
 /* SECOND CLASS */
 // Binary operation like x + y
 class BinaryOperation : public SecondClass {
-};
-
-// Mathematical factor, like x, y, 5, i, etc...
-class MathematicalFactor : public SecondClass {
+    public:
+        SecondClass left_branch;
+        Token op;
+        SecondClass right_branch;
+        BinaryOperation(SecondClass left_branch, Token op, SecondClass right_branch);
 };
 
 // Direct literal like 5, 'A'. Not like x, y, z
 class DirectLiteral : public SecondClass {
+    public:
+        int prefix; // determines type of prefix. 0=no prefix; 1 = minus prefix; 2 = not prefix; 3 = bitwise not prefix;
+        Type type;
+        string value;
+        DirectLiteral(int prefix, Type type, string value);
+};
+
+// Second Class function call like int x = count(a)
+class SecondClassFunctionCall : public SecondClass {
 };
 
 // use variable
 class UseVariable : public SecondClass {
 };
 
-// Typecast like: int(0.5)
+// Typecast like: (0.5) -> int
 class TypeCast : public SecondClass {
 };
 

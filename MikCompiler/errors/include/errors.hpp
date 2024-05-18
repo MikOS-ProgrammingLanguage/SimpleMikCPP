@@ -62,9 +62,16 @@
 #define EXPECTED_NEWLINE_BEFORE_NEW_FIRST_CLASS_EXPRESSION 303
 #define EXPECTED_NEWLINE_BEFORE_NEW_FIRST_CLASS_EXPRESSION_LINK GET_ERROR(EXPECTED_NEWLINE_BEFORE_NEW_FIRST_CLASS_EXPRESSION)
 
+#define EXPEXTED_EXPRESSION_AFTER_OPERATION_IN_ASSIGNMENT 304 
+#define EXPEXTED_EXPRESSION_AFTER_OPERATION_IN_ASSIGNMENT_LINK GET_ERROR(EXPEXTED_EXPRESSION_AFTER_OPERATION_IN_ASSIGNMENT)
+
+#define BASE_TYPES_NOT_CONSISTENT 305
+#define BASE_TYPES_NOT_CONSISTENT_LINK GET_ERROR(BASE_TYPES_NOT_CONSISTENT)
+
 void throw_error(int err_code, Lexer state);
 void throw_error(int err_code, string line, int line_number, string path);
 void throw_error(int err_code, Parser state);
+void throw_type_error(int err_code, Type expected, Type was, Parser state);
 void print_error_location(Lexer state);
 void print_error_location(Parser state);
 

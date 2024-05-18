@@ -7,7 +7,7 @@
 int main(void) {
     init_utils();
 
-    string text = "int i = 10 int x = i+5";
+    string text = "str i = 10 +";
     AST result(vector<FirstClass>(0));
 
     Preprocessor preprocessor(text, "./main.mik");
