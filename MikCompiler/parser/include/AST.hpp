@@ -19,24 +19,28 @@ enum {
 // First class object interface
 class FirstClass {
     public:
-        int type;
+        virtual ~FirstClass() = default;
 };
 
 // Second class object interface
 class SecondClass {
+    public:
+        virtual ~SecondClass() = default;
 };
 
 /* OTHER */
 class Type {
     public:
-        Type(int _base_type, string _cutsom_type, pair<int, int> _dimensions);
+        Type(int _base_type, string _cutsom_type, vector<int> _dimensions);
+        Type();
         friend bool operator==(const Type& lhs, const Type& rhs); // compares lhs to rhs (all parameters in lhr and rhs have to be equal, however, lhs.base_type and rhs.base_type only need satisfy lhs.base_type >= rhs.base_type)
         friend bool operator!=(const Type& lhs, const Type& rhs); // = !(A==B)
         friend bool operator<=(const Type& lhs, const Type& rhs); // compares lhs to rhs (all parameters in lhr and rhs have to be equal, however, lhs.base_type and rhs.base_type only need satisfy lhs.base_type <= rhs.base_type)
         friend bool operator>=(const Type& lhs, const Type& rhs); // compares lhs to rhs (all parameters in lhr and rhs have to be equal, however, lhs.base_type and rhs.base_type only need satisfy lhs.base_type >= rhs.base_type)
         friend bool operator>(const Type& lhs, const Type& rhs);
+        friend bool operator<(const Type& lhs, const Type& rhs);
         int base_type; // built-in types (invalid type (=0) for custom types)
-        pair<int, int> dimensions; // rows x columns (like matrix)
+        vector<int> dimensions; // x1 x x2 x x3 ....
         string custom_type; // like structs, etc...
 };
 
@@ -138,16 +142,31 @@ class DirectLiteral : public SecondClass {
 
 // Second Class function call like int x = count(a)
 class SecondClassFunctionCall : public SecondClass {
+    public:
+        SecondClassFunctionCall(Function function, int prefix);
+        SecondClassFunctionCall();
+        Function function;
+        vector<SecondClass> arguments;
+        int prefix;
 };
 
 // use variable
 class UseVariable : public SecondClass {
+    public:
+        UseVariable(VariableAssignment variable, int prefix);
+        VariableAssignment variable;
+        int prefix;
 };
 
 // Typecast like: (0.5) -> int
 class TypeCast : public SecondClass {
+    public:
+        Type from;
+        Type to;
+        SecondClassFunctionCall typecast_function; // only needed if from or to are not base types
+        SecondClass expression;
+        TypeCast(Type from, Type to, SecondClassFunctionCall typecast_function, SecondClass expression);
 };
-
 
 #endif // MIK_AST_H
 #define MIK_AST_H

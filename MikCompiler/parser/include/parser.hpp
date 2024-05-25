@@ -7,6 +7,9 @@
 
 class Parser {
     private:
+        Type factor_type;
+        bool dont_allow_parenthesis;
+
         vector<FirstClass> parse_until(int token);
         VariableAssignment parse_variable_assignment();
 
@@ -15,6 +18,7 @@ class Parser {
         SecondClass parse_sub_expression(Type expected_type);
         SecondClass parse_term(Type expected_type);
         SecondClass parse_factor(Type expected_type);
+        void type_compare(Type expected_type, Type is, int prefix); // throws error if types are not consistent with one another
 
         void init_builtins();
         void advance();
@@ -30,6 +34,9 @@ class Parser {
 
         map<string, Function> FUNCTIONS;
         vector<string> function_names;
+
+        map<string, VariableAssignment> VARIABLES;
+        vector<string> variable_names;
 
         vector<Token> tokens;
         string &text;

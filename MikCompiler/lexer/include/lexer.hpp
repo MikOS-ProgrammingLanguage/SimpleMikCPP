@@ -42,9 +42,11 @@ enum {
     TT_TIMES_EQUALS, // *=
     TT_OVER_EQUALS,  // /=
 
-    // Numbers
+    // Builtin-Types
     TT_INT,
     TT_FLOAT,
+    TT_STRING_LITERAL, // "<sting>"
+    TT_ASCII_LITERAL,  // '<char>'
 
     // Parenthesis
     TT_OPENING_PARENTHESIS, // (
@@ -59,8 +61,6 @@ enum {
     TT_ARROW,          // ->
     TT_DOT,            // .
     TT_ID,
-    TT_STRING_LITERAL, // "<sting>"
-    TT_ASCII_LITERAL,  // '<char>'
     TT_END_OF_FILE,    // Marks the end of the input file
     
     // Compiler directives

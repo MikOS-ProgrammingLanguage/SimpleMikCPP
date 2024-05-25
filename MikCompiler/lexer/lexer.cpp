@@ -311,9 +311,10 @@ pair<vector<Token>, stack<pair<string, int>>> Lexer::lex(void) {
                     .line_number = this->positions_in_files.top().second,
                     .idx = this->current_index,
                     .token_type = TT_PLUS,
+                    .value = "+",
                 });
 
-                this->current_character--;
+                this->current_index--;
             }
         } break;
 
@@ -336,7 +337,7 @@ pair<vector<Token>, stack<pair<string, int>>> Lexer::lex(void) {
                     .token_type = TT_MINUS,
                 });
 
-                this->current_character--;
+                this->current_index--;
             }
         } break;
 
@@ -359,7 +360,7 @@ pair<vector<Token>, stack<pair<string, int>>> Lexer::lex(void) {
                     .token_type = TT_ASTERISK,
                 });
 
-                this->current_character--;
+                this->current_index--;
             }
         } break;
 
@@ -406,7 +407,7 @@ pair<vector<Token>, stack<pair<string, int>>> Lexer::lex(void) {
                     .token_type = TT_SLASH,
                 });
 
-                this->current_character--;
+                this->current_index--;
             }
         } break;
 

@@ -5,15 +5,14 @@
 #include <debug.hpp>
 #include <parser.hpp>
 #include <utils.hpp>
-#include <debug.hpp>
 
 Type convert_token_to_type(Token t) {
     // if type isnt invalid
     if (find(type_names.begin(), type_names.end(), t.value) !=
         type_names.end()) {
-        return Type(token_value_to_type[t.value], "", MTRX(1,1));
+        return Type(token_value_to_type_enum[t.value], "", DIM(1));
     } else {
-        return Type(TYPE_INVALID, t.value, pair<int, int>(1,1));
+        return Type(TYPE_INVALID, t.value, DIM(1));
     }
 }
 
@@ -41,6 +40,12 @@ VariableAssignment Parser::parse_variable_assignment() {
     }
     result.name = current_token.value;
     this->advance();
+    // check availablility
+    if (find(this->variable_names.begin(), this->variable_names.end(),
+             result.name) != this->variable_names.end() ||
+        find(keywords.begin(), keywords.end(), result.name) != keywords.end()) {
+        throw_error(VARIABLE_NAME_TAKEN_OR_KEYWORD, *this);
+    }
 
     // Array with n dimensions,
     // or a bound
@@ -52,13 +57,20 @@ VariableAssignment Parser::parse_variable_assignment() {
             *this);
     }
 
-    // Array
+    // Array #TODO#
     if (this->current_token.token_type == TT_OPENING_BRACKET) {
         this->advance();
     }
 
-    // Check for bound
+    // check for custom guard #TODO#
+
+    // Check for bound #TODO#
     if (this->current_token.token_type == TT_OPENING_BRACE) {
+        // builtin guards only work on numbers
+        if (result.type.base_type != TYPE_INT &&
+            result.type.base_type != TYPE_FLOAT) {
+            throw_error(BUILTIN_GUARDS_TYPE_MISSMATCH, *this);
+        }
         this->advance();
         result.is_bounded = true;
     }

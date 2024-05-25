@@ -12,9 +12,9 @@ void Parser::init_builtins() {
     this->FUNCTIONS["puts"].declared = true;
     this->FUNCTIONS["puts"].function_name = "puts";
     this->FUNCTIONS["puts"].arguments =
-        pair<vector<VariableAssignment>, vector<Type>>(
-            {VariableAssignment()}, {BASE_TYPE_STRING(1,1)});
-    this->FUNCTIONS["puts"].return_type = BASE_TYPE_INT(1,1);
+        pair<vector<VariableAssignment>, vector<Type>>({VariableAssignment()},
+                                                       {BASE_TYPE_STRING(1)});
+    this->FUNCTIONS["puts"].return_type = BASE_TYPE_INT(1);
     this->FUNCTIONS["puts"].body = AST(vector<FirstClass>(0));
     this->FUNCTIONS["puts"].behavioural_descriptors =
         vector<int>{DESCRIPTOR_NORET};
@@ -36,9 +36,9 @@ void Parser::advance() {
 vector<FirstClass> Parser::parse_until(int token) {
     vector<FirstClass> result(0);
 
+    // advance until next token should happen in each branch
     for (; this->current_token.token_type != TT_END_OF_FILE &&
-           this->current_token.token_type != token;
-         this->advance()) {
+           this->current_token.token_type != token;) {
         // Each statement or line start has to start with an ID
         if (this->current_token.token_type != TT_ID) {
             throw_error(EXPECTED_IDENTIFIER_FOR_FIRST_CLASS_EXPRESSION, *this);
