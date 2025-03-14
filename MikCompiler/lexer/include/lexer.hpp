@@ -10,56 +10,56 @@ using namespace std;
 // All valid tokens
 enum {
     // Bitwise operators
-    TT_BITWISE_AND,    // b&
-    TT_BITWISE_OR,     // b|
-    TT_BITWISE_XOR,    // ^
-    TT_BITWISE_NOT,    // b!
-    TT_LEFT_BITSHIFT,  // <<
-    TT_RIGHT_BITSHIFT, // >>
+    TT_BITWISE_AND,    // b&, 0
+    TT_BITWISE_OR,     // b|, 1
+    TT_BITWISE_XOR,    // ^ , 2
+    TT_BITWISE_NOT,    // b!, 3
+    TT_LEFT_BITSHIFT,  // <<, 4
+    TT_RIGHT_BITSHIFT, // >>, 5
 
     // Boolean operators
-    TT_LESS_THAN,             // <
-    TT_GREATER_THAN,          // >
-    TT_LESS_THAN_OR_EQUAL,    // <=
-    TT_GREATER_THAN_OR_EQUAL, // >=
-    TT_AND,                   // &&
-    TT_OR,                    // ||
-    TT_NOT,                   // !
-    TT_NOT_EQUAL,             // !=
-    TT_EQUAL,                 // ==
+    TT_LESS_THAN,             // < , 6
+    TT_GREATER_THAN,          // > , 7
+    TT_LESS_THAN_OR_EQUAL,    // <=, 8
+    TT_GREATER_THAN_OR_EQUAL, // >=, 9
+    TT_AND,                   // &&, 10
+    TT_OR,                    // ||, 11
+    TT_NOT,                   // ! , 12
+    TT_NOT_EQUAL,             // !=, 13
+    TT_EQUAL,                 // ==, 14
 
     // Numerical operators
-    TT_PLUS,     // +
-    TT_MINUS,    // -
-    TT_ASTERISK, // *
-    TT_SLASH,    // /
-    TT_PERCENT,  // %
+    TT_PLUS,     // +, 15
+    TT_MINUS,    // -, 16
+    TT_ASTERISK, // *, 17 
+    TT_SLASH,    // /, 18
+    TT_PERCENT,  // %, 19
     
     // Assignment operators
-    TT_ASSIGNMENT,   // =
-    TT_PLUS_EQUALS,  // *=
-    TT_MINUS_EQUALS, // -=
-    TT_TIMES_EQUALS, // *=
-    TT_OVER_EQUALS,  // /=
+    TT_ASSIGNMENT,   // = , 20
+    TT_PLUS_EQUALS,  // *=, 21
+    TT_MINUS_EQUALS, // -=, 22
+    TT_TIMES_EQUALS, // *=, 23
+    TT_OVER_EQUALS,  // /=, 24
 
     // Builtin-Types
-    TT_INT,
-    TT_FLOAT,
-    TT_STRING_LITERAL, // "<sting>"
-    TT_ASCII_LITERAL,  // '<char>'
+    TT_INT,            //          , 25
+    TT_FLOAT,          //          , 26
+    TT_STRING_LITERAL, // "<sting>", 27
+    TT_ASCII_LITERAL,  // '<char>' , 28
 
     // Parenthesis
-    TT_OPENING_PARENTHESIS, // (
-    TT_CLOSING_PARENTHESIS, // )
-    TT_OPENING_BRACKET,     // [
-    TT_CLOSING_BRACKET,     // ]
-    TT_OPENING_BRACE,       // {
-    TT_CLOSING_BRACE,       // }
+    TT_OPENING_PARENTHESIS, // (, 29
+    TT_CLOSING_PARENTHESIS, // ), 30
+    TT_OPENING_BRACKET,     // [, 31
+    TT_CLOSING_BRACKET,     // ], 32
+    TT_OPENING_BRACE,       // {, 33
+    TT_CLOSING_BRACE,       // }, 34
 
     // Other
-    TT_COMMA,          // ,
-    TT_ARROW,          // ->
-    TT_DOT,            // .
+    TT_COMMA,          // , , 35
+    TT_ARROW,          // ->, 36
+    TT_DOT,            // . , 37
     TT_ID,
     TT_END_OF_FILE,    // Marks the end of the input file
     

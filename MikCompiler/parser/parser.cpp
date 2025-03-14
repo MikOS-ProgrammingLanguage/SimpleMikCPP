@@ -31,6 +31,7 @@ void Parser::advance() {
                                     .value = "EOF",
                                     .imm_value = 0,
                                 };
+    debug("CURR: " + this->current_token.value +", " + to_string(this->current_token.token_type));
 }
 
 vector<FirstClass> Parser::parse_until(int token) {

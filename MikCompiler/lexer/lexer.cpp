@@ -329,6 +329,12 @@ pair<vector<Token>, stack<pair<string, int>>> Lexer::lex(void) {
                     .idx = this->current_index,
                     .token_type = TT_MINUS_EQUALS,
                 });
+	    else if (current_character == '>')
+		this->tokens.push_back(Token{
+		    .file_name = this->positions_in_files.top().first,
+		    .line_number = this->positions_in_files.top().second,
+		    .token_type = TT_ARROW,
+		});
             else {
                 this->tokens.push_back(Token{
                     .file_name = this->positions_in_files.top().first,

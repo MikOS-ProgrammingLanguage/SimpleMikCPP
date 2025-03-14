@@ -265,11 +265,14 @@ SecondClass Parser::parse_factor(Type expected_type) {
         }
         this->advance();
 
+
         // typecast
         if (this->current_token.token_type == TT_ARROW) {
             TypeCast res = TypeCast(BASE_TYPE_INVALID(1), BASE_TYPE_INVALID(1),
                          SecondClassFunctionCall(), SecondClass());
             this->advance();
+
+	    debug("hit typecast");
 
             // valid type
             if (this->current_token.token_type == TT_ID &&
@@ -277,6 +280,8 @@ SecondClass Parser::parse_factor(Type expected_type) {
                      this->current_token.value) != type_names.end()) {
                 res.to = token_value_to_type[this->current_token.value];
                 this->type_compare(expected_type, res.to, prefix);
+		
+		debug("type was valid");
 
                 // perform expr again
                 this->token_pos = pos-1;

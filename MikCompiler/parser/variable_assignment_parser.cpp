@@ -39,6 +39,7 @@ VariableAssignment Parser::parse_variable_assignment() {
         throw_error(EXPECTED_VARIABLE_NAME_AFTER_TYPE, *this);
     }
     result.name = current_token.value;
+    debug(result.name);
     this->advance();
     // check availablility
     if (find(this->variable_names.begin(), this->variable_names.end(),
@@ -81,6 +82,7 @@ VariableAssignment Parser::parse_variable_assignment() {
         this->advance();
         return result;
     }
+    debug("Hit assignment");
     this->advance();
 
     // expression for assignment with given type (have to be on the same line)

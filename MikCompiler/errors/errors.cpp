@@ -45,7 +45,6 @@ void print_error_location(Lexer state) {
 }
 
 void print_error_location(Parser state) {
-    /*
     string whitespace_buffer = string(state.current_token.line_number, ' ');
     string line_to_print;
     state.current_token.idx--;
@@ -82,7 +81,6 @@ void print_error_location(Parser state) {
          << to_string(state.current_token.line_number) << " | " << DEFAULT
          << line_to_print << "\n\t" << BLUE << whitespace_buffer << " | "
          << endl;
-         */
 }
 
 void print_error_location(string line, int line_number, string path) {
