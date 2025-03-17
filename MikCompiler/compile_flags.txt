@@ -6,3 +6,4 @@
 -Ierrors/include
 -Iparser/include
 -Iutils/include
+-std=c++17

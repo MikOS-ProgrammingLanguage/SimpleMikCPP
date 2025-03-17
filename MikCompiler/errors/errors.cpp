@@ -258,6 +258,10 @@ void throw_error(int err_code, Parser state) {
         s = "Expected a closing parenthesis in expression surrounded with parenthesis";
         print_std_error(EXPECTED_CLOSING_PARENTHESIS, EXPECTED_CLOSING_PARENTHESIS_LINK, s, state);
     } break;
+    case STANDALONE_REFFERENCE_TO_VARIABLE_NOT_ALLOWED: {
+        s = "Found a stand-alone refference to a variable. Did you mean to re-assign it?";
+        print_std_error(STANDALONE_REFFERENCE_TO_VARIABLE_NOT_ALLOWED, STANDALONE_REFFERENCE_TO_VARIABLE_NOT_ALLOWED_LINK, s, state);
+    } break;
     }
 }
 

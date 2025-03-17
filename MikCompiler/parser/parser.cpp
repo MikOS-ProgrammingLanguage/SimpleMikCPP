@@ -51,7 +51,12 @@ vector<FirstClass> Parser::parse_until(int token) {
             find(struct_types.begin(), struct_types.end(),
                  this->current_token.value) != struct_types.end()) {
             debug("type found (first class)");
-            result.push_back(this->parse_variable_assignment()); // TODO
+            result.push_back(this->parse_variable_assignment()); // Some TODO left
+        } 
+        // Variable reassignment
+        else if (find(this->variable_names.begin(), this->variable_names.end(), this->current_token.value) != this->variable_names.end()) {
+            debug("variable name found. Expect variable reassignment");
+            result.push_back(this->parse_variable_reassignment());
         }
 
         // TODO:

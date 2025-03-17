@@ -69,6 +69,10 @@ bool operator<(const Type &lhs, const Type &rhs) {
            (lhs.custom_type == rhs.custom_type);
 }
 
+// VariableAlteration
+VariableAlteration::VariableAlteration() {
+}
+
 // VariableAssignment
 VariableAssignment::VariableAssignment() : type(BASE_TYPE_INVALID(1)) {
     this->is_declared = false;

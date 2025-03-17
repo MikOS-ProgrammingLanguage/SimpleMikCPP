@@ -12,6 +12,7 @@ class Parser {
 
         vector<FirstClass> parse_until(int token);
         VariableAssignment parse_variable_assignment();
+        VariableAlteration parse_variable_alteration();
 
         SecondClass        parse_second_class(Type expected_type);
         SecondClass binary_operation(int type_of_operation, vector<int>operators_for_operation, Type expected_type); // Type of operation is used to distinguish between 3 different types of operation: 0=factor, 1=term, 2=sub_expression

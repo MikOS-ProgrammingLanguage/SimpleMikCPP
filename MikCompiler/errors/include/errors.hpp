@@ -105,6 +105,9 @@
 #define EXPRESSION_IN_PARENTHESIS_NOT_ALLOWED 316
 #define EXPRESSION_IN_PARENTHESIS_NOT_ALLOWED_LINK GET_ERROR(EXPRESSION_IN_PARENTHESIS_NOT_ALLOWED)
 
+#define STANDALONE_REFFERENCE_TO_VARIABLE_NOT_ALLOWED 317
+#define STANDALONE_REFFERENCE_TO_VARIABLE_NOT_ALLOWED_LINK GET_ERROR(STANDALONE_REFFERENCE_TO_VARIABLE_NOT_ALLOWED)
+
 void throw_error(int err_code, Lexer state);
 void throw_error(int err_code, string line, int line_number, string path);
 void throw_error(int err_code, Parser state);

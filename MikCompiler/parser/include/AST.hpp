@@ -78,6 +78,12 @@ class Return : public FirstClass {
 
 // re-assignment of a variable or in general variable alteration
 class VariableAlteration : public FirstClass {
+    public:
+        VariableAlteration();
+
+        string name;
+        Token reassignment_type;
+        SecondClass reassigned_expression;
 };
 
 // Assignment (Here the same node as for array assignments)
