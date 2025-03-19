@@ -12,10 +12,11 @@ if __name__ == "__main__":
             files_list.append(os.path.join(root, file))
 
     files_list = files_list[1:] # removes the python file
+    files_list.sort()
     for file in files_list:
 
-        if (b"\x1b[31m\n\r[ERROR " + bytes(file.split("/")[len(file.split("/"))-1][:-4], 'utf-8')) in subprocess.run(['../mic', file], stdout=subprocess.PIPE).stdout:
-                   print("Test: " + file.split("/")[len(file.split("/"))-1][:-4] + " -> Succeeded")
+        if (b"\x1b[31m\n\r[ERROR " + bytes(file.split("/")[len(file.split("/"))-1][0:3], 'utf-8')) in subprocess.run(['../mic', file], stdout=subprocess.PIPE).stdout:
+            print("Test: " + file.split("/")[len(file.split("/"))-1] + " -> Succeeded")
         else:
-                   print("Test: " + file.split("/")[len(file.split("/"))-1][:-4] + " -> Failed")
+            print("Test: " + file.split("/")[len(file.split("/"))-1] + " -> Failed")
 

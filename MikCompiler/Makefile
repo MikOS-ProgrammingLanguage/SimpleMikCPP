@@ -13,7 +13,7 @@ SRC_PREPROCESSOR = $(wildcard preprocessor/*.cpp)
 SRC_LEXER        = $(wildcard lexer/*.cpp)
 SRC_ERROR        = $(wildcard errors/*.cpp)
 SRC_PARSER       = $(wildcard parser/*.cpp)
-DEBUG            = -D DEBUG
+DEBUG            = #-D DEBUG
 
 OUTPUT = mic
 $(OUTPUT): $(OBJS) $(OBJS_UTILS) $(OBJS_PREPROCESSOR) $(OBJS_LEXER) $(OBJS_ERROR) $(OBJS_PARSER)

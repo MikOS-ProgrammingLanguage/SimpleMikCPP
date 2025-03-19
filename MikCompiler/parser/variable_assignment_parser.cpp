@@ -28,6 +28,7 @@ all of those can be followed by:
 <expression> on arrays this will simply apply to all variables in that array
 */
 VariableAssignment Parser::parse_variable_assignment() {
+    int current_line = this->current_token.line_number;
     VariableAssignment result = VariableAssignment();
 
     result.type = convert_token_to_type(this->current_token);
@@ -47,6 +48,9 @@ VariableAssignment Parser::parse_variable_assignment() {
         find(keywords.begin(), keywords.end(), result.name) != keywords.end()) {
         throw_error(VARIABLE_NAME_TAKEN_OR_KEYWORD, *this);
     }
+
+    // append name to existing variable names
+    this->variable_names.push_back(result.name); 
 
     // Array with n dimensions,
     // or a bound
@@ -87,6 +91,10 @@ VariableAssignment Parser::parse_variable_assignment() {
 
     // expression for assignment with given type (have to be on the same line)
     result.assigned_expression = this->parse_second_class(result.type);
+    
+    if (this->current_token.line_number == current_line) {
+      throw_error(EXPECTED_NEWLINE_BEFORE_NEW_FIRST_CLASS_EXPRESSION, *this);
+    }
 
     return result;
 }

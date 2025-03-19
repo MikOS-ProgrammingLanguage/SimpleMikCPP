@@ -262,6 +262,22 @@ void throw_error(int err_code, Parser state) {
         s = "Found a stand-alone refference to a variable. Did you mean to re-assign it?";
         print_std_error(STANDALONE_REFFERENCE_TO_VARIABLE_NOT_ALLOWED, STANDALONE_REFFERENCE_TO_VARIABLE_NOT_ALLOWED_LINK, s, state);
     } break;
+    case EXPECTED_SECOND_CLASS_EXPRESSION: {
+        s = "Expected a Second-class-expression but none was found";
+        print_std_error(EXPECTED_SECOND_CLASS_EXPRESSION, EXPECTED_SECOND_CLASS_EXPRESSION_LINK, s, state);
+    } break;
+    case UNKNOWN_IDENTIFIER_IN_EXPRESSION: {
+        s = "An unknown identifier was encountered in an expression. Is the Variable/Function you are refferencing not in scope?";
+        print_std_error(UNKNOWN_IDENTIFIER_IN_EXPRESSION, UNKNOWN_IDENTIFIER_IN_EXPRESSION_LINK, s, state);
+    } break;
+    case UNKNOWN_TYPE_IN_ASSIGNMENT: {
+        s = "The type you refferenced in the assignment is not defined";
+        print_std_error(UNKNOWN_TYPE_IN_ASSIGNMENT, UNKNOWN_TYPE_IN_ASSIGNMENT_LINK, s, state);
+    } break;
+    case UNKNOWN_FIRST_CLASS_IDENTIFIER: {
+        s = "At the beginning of this statement, the Keyword/Variable/Function refferenced does not exist. Is the function or variable not in scope?";
+        print_std_error(UNKNOWN_FIRST_CLASS_IDENTIFIER, UNKNOWN_FIRST_CLASS_IDENTIFIER_LINK, s, state);
+    } break;
     }
 }
 

@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <errors.hpp>
 #include <lexer.hpp>
+#include <debug.hpp>
 
 Lexer::Lexer(string text) {
     this->text = text;
@@ -381,10 +382,14 @@ pair<vector<Token>, stack<pair<string, int>>> Lexer::lex(void) {
                     .idx = this->current_index,
                     .token_type = TT_OVER_EQUALS,
                 });
-            else if (current_character == '/')
+            else if (current_character == '/') {
                 // //
-                while (current_character != '\n' && current_character != '\0')
-                    advance();
+                while (this->current_character != '\n' && this->current_character != '\0') {
+                    this->advance();
+                }
+            
+                this->current_index--;
+            }
             else if (current_character == '*') {
                 // /*
                 this->advance();

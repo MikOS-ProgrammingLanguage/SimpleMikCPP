@@ -333,7 +333,7 @@ SecondClass Parser::parse_factor(Type expected_type) {
         }
     }
 
-    // something went wrong if this is reached
-    throw_compiler_error(COMPILER_ERROR);
+    // No Factor was provided but expected. I.e.: Second class expression was expected
+    throw_error(EXPECTED_SECOND_CLASS_EXPRESSION, *this);
     return SecondClass();
 }

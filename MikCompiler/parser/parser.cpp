@@ -51,12 +51,27 @@ vector<FirstClass> Parser::parse_until(int token) {
             find(struct_types.begin(), struct_types.end(),
                  this->current_token.value) != struct_types.end()) {
             debug("type found (first class)");
-            result.push_back(this->parse_variable_assignment()); // Some TODO left
+
+            VariableAssignment intermediate = this->parse_variable_assignment();
+            result.push_back(intermediate); // Some TODO left
+            this->VARIABLES[intermediate.name] = intermediate;
         } 
         // Variable reassignment
         else if (find(this->variable_names.begin(), this->variable_names.end(), this->current_token.value) != this->variable_names.end()) {
             debug("variable name found. Expect variable reassignment");
-            result.push_back(this->parse_variable_reassignment());
+            result.push_back(this->parse_variable_alteration());
+        }
+
+
+        else {
+            // if there is another ID afterwards, the user tried to assign -> type DNE
+            this->advance();
+            if (this->current_token.token_type == TT_ID) {
+                throw_error(UNKNOWN_TYPE_IN_ASSIGNMENT, *this);
+            } else {
+                // if there isn't such an Identifier
+                throw_error(UNKNOWN_FIRST_CLASS_IDENTIFIER, *this);
+            }
         }
 
         // TODO:
