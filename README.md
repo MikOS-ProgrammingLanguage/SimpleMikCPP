@@ -2,18 +2,18 @@
 
 ## Mik Compiler (mic)
 To install the mik compiler, clone the repo and:
-```
+```bash
 cd SimpleMikCPP/MikCompiler
 ```
 
 Then run either:
-```
+```bash
 make
 ```
 
 or 
 
-```
+```bash
 <c_compiler> nob.c -o nob && ./nob
 ```
 
