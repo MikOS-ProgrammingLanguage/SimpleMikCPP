@@ -1,9 +1,8 @@
 #include "lexer.hpp"
 #include <AST.hpp>
-#include <parser.hpp>
-#include <errors.hpp>
 #include <debug.hpp>
-
+#include <errors.hpp>
+#include <parser.hpp>
 
 VariableAlteration Parser::parse_variable_alteration() {
     // Note name. Type is not needed, as it can be infferred by name
@@ -12,7 +11,11 @@ VariableAlteration Parser::parse_variable_alteration() {
     this->advance();
 
     // Check for equal sign
-    if (this->current_token.token_type != TT_ASSIGNMENT && this->current_token.token_type != TT_MINUS_EQUALS && this->current_token.token_type != TT_PLUS_EQUALS && this->current_token.token_type != TT_TIMES_EQUALS && this->current_token.token_type != TT_OVER_EQUALS) {
+    if (this->current_token.token_type != TT_ASSIGNMENT &&
+        this->current_token.token_type != TT_MINUS_EQUALS &&
+        this->current_token.token_type != TT_PLUS_EQUALS &&
+        this->current_token.token_type != TT_TIMES_EQUALS &&
+        this->current_token.token_type != TT_OVER_EQUALS) {
         // Expected =, +=, -=, *=, or \=
         throw_error(STANDALONE_REFFERENCE_TO_VARIABLE_NOT_ALLOWED, *this);
     }
@@ -21,9 +24,9 @@ VariableAlteration Parser::parse_variable_alteration() {
     result.reassignment_type = this->current_token;
     this->advance();
 
-    // Parse expression with expected type 
-    result.reassigned_expression = this->parse_second_class(this->VARIABLES[result.name].type);
+    // Parse expression with expected type
+    result.reassigned_expression =
+        this->parse_second_class(this->VARIABLES[result.name].type);
 
     return result;
 }
-

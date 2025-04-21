@@ -50,7 +50,7 @@ VariableAssignment Parser::parse_variable_assignment() {
     }
 
     // append name to existing variable names
-    this->variable_names.push_back(result.name); 
+    this->variable_names.push_back(result.name);
 
     // Array with n dimensions,
     // or a bound
@@ -91,9 +91,9 @@ VariableAssignment Parser::parse_variable_assignment() {
 
     // expression for assignment with given type (have to be on the same line)
     result.assigned_expression = this->parse_second_class(result.type);
-    
+
     if (this->current_token.line_number == current_line) {
-      throw_error(EXPECTED_NEWLINE_BEFORE_NEW_FIRST_CLASS_EXPRESSION, *this);
+        throw_error(EXPECTED_NEWLINE_BEFORE_NEW_FIRST_CLASS_EXPRESSION, *this);
     }
 
     return result;

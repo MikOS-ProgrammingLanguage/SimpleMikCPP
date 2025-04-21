@@ -70,8 +70,7 @@ bool operator<(const Type &lhs, const Type &rhs) {
 }
 
 // VariableAlteration
-VariableAlteration::VariableAlteration() {
-}
+VariableAlteration::VariableAlteration() {}
 
 // VariableAssignment
 VariableAssignment::VariableAssignment() : type(BASE_TYPE_INVALID(1)) {
@@ -139,8 +138,10 @@ UseVariable::UseVariable(VariableAssignment variable, int prefix)
 
 // Typecast
 TypeCast::TypeCast(Type from, Type to,
-                   SecondClassFunctionCall typecast_function, SecondClass expression)
-    : from(from), to(to), typecast_function(typecast_function), expression(expression) {
+                   SecondClassFunctionCall typecast_function,
+                   SecondClass expression)
+    : from(from), to(to), typecast_function(typecast_function),
+      expression(expression) {
     this->from = from;
     this->to = to;
     this->typecast_function = typecast_function;

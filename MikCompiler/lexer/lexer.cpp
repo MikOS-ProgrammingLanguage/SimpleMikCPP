@@ -1,7 +1,7 @@
 #include <algorithm>
+#include <debug.hpp>
 #include <errors.hpp>
 #include <lexer.hpp>
-#include <debug.hpp>
 
 Lexer::Lexer(string text) {
     this->text = text;
@@ -330,12 +330,12 @@ pair<vector<Token>, stack<pair<string, int>>> Lexer::lex(void) {
                     .idx = this->current_index,
                     .token_type = TT_MINUS_EQUALS,
                 });
-	    else if (current_character == '>')
-		this->tokens.push_back(Token{
-		    .file_name = this->positions_in_files.top().first,
-		    .line_number = this->positions_in_files.top().second,
-		    .token_type = TT_ARROW,
-		});
+            else if (current_character == '>')
+                this->tokens.push_back(Token{
+                    .file_name = this->positions_in_files.top().first,
+                    .line_number = this->positions_in_files.top().second,
+                    .token_type = TT_ARROW,
+                });
             else {
                 this->tokens.push_back(Token{
                     .file_name = this->positions_in_files.top().first,
@@ -384,13 +384,13 @@ pair<vector<Token>, stack<pair<string, int>>> Lexer::lex(void) {
                 });
             else if (current_character == '/') {
                 // //
-                while (this->current_character != '\n' && this->current_character != '\0') {
+                while (this->current_character != '\n' &&
+                       this->current_character != '\0') {
                     this->advance();
                 }
-            
+
                 this->current_index--;
-            }
-            else if (current_character == '*') {
+            } else if (current_character == '*') {
                 // /*
                 this->advance();
 

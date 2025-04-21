@@ -101,7 +101,7 @@ class VariableAssignment : public FirstClass {
         Boundary bound;
 };
 
-// function like: mikf f(int x) -> int {return x*x}
+// function like: fn f(int x) -> int {return x*x}
 class Function : public FirstClass {
     public:
         bool declared;
@@ -120,6 +120,23 @@ class Function : public FirstClass {
                 , map<string, VariableAssignment> _internaly_known_variables, map<string, Function> _internaly_known_functions
                 , map<string, Struct> _internaly_known_structs);
         Function(); // construct later on
+};
+
+// Typecast function definitions
+class TypeCastFunction : public FirstClass {
+    public:
+        bool declared;
+        Type from_type;
+        Type to_type;
+        pair<VariableAssignment, Type> argument;
+        AST body;
+
+        // All internally known variables are scoped within the function -> were created within it
+        map<string, VariableAssignment> internaly_known_variables;
+        map<string, Function> internaly_known_functions;
+        map<string, Struct> internaly_known_structs;
+
+        TypeCastFunction();
 };
 
 // first class function call like: kill()

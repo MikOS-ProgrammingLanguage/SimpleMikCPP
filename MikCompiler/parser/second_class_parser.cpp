@@ -14,8 +14,10 @@
 using namespace std;
 
 void Parser::type_compare(Type expected_type, Type is, int prefix) {
-    // if expected type is invalid type, then the factor_type is set and no error is thrown
-    if (expected_type.base_type == TYPE_INVALID && expected_type.custom_type == "") {
+    // if expected type is invalid type, then the factor_type is set and no
+    // error is thrown
+    if (expected_type.base_type == TYPE_INVALID &&
+        expected_type.custom_type == "") {
         this->factor_type = is;
     } else if (expected_type > is) {
         // expected_type and TYPE(STRING) are not consistent
@@ -182,10 +184,10 @@ SecondClass Parser::parse_factor(Type expected_type) {
         // if type needs to be cast unexplicitly, this is done here #TODO#
         if (expected_type < is) {
             ret = TypeCast(BASE_TYPE_STRING(1), expected_type,
-                           SecondClassFunctionCall(), DirectLiteral(prefix, is, current_token.value));
+                           SecondClassFunctionCall(),
+                           DirectLiteral(prefix, is, current_token.value));
         } else {
-            ret =
-                DirectLiteral(prefix, is, current_token.value);
+            ret = DirectLiteral(prefix, is, current_token.value);
         }
         this->advance();
         return ret;
@@ -258,21 +260,21 @@ SecondClass Parser::parse_factor(Type expected_type) {
         // checked. If so, the type is determined, and the current token
         // position and current token are set to the noted value, now expr is
         // evaluated again, this time with the type cast to.
-        SecondClass type_cast_expr = this->parse_second_class(BASE_TYPE_INVALID(1));
+        SecondClass type_cast_expr =
+            this->parse_second_class(BASE_TYPE_INVALID(1));
 
         if (this->current_token.token_type != TT_CLOSING_PARENTHESIS) {
             throw_error(EXPECTED_CLOSING_PARENTHESIS, *this);
         }
         this->advance();
 
-
         // typecast
         if (this->current_token.token_type == TT_ARROW) {
             TypeCast res = TypeCast(BASE_TYPE_INVALID(1), BASE_TYPE_INVALID(1),
-                         SecondClassFunctionCall(), SecondClass());
+                                    SecondClassFunctionCall(), SecondClass());
             this->advance();
 
-	    debug("hit typecast");
+            debug("hit typecast");
 
             // valid type
             if (this->current_token.token_type == TT_ID &&
@@ -280,24 +282,28 @@ SecondClass Parser::parse_factor(Type expected_type) {
                      this->current_token.value) != type_names.end()) {
                 res.to = token_value_to_type[this->current_token.value];
                 this->type_compare(expected_type, res.to, prefix);
-		
-		debug("type was valid");
+
+                debug("type was valid");
 
                 // perform expr again
-                this->token_pos = pos-1;
+                this->token_pos = pos - 1;
                 this->advance(); // reload beginning token
-                
+
                 // parse factor and determine type
                 this->dont_allow_parenthesis = true;
                 res.expression = this->parse_factor(BASE_TYPE_INVALID(1));
                 res.from = this->factor_type;
                 this->dont_allow_parenthesis = false;
 
-                // determine conversion function and wether the conversion is valid
-                if (typecast_functions.find(pair<Type, Type>(res.from, res.to)) == typecast_functions.end()) {
-                    throw_type_error(INVALID_CONVERSION, res.from, res.to, *this);
+                // determine conversion function and wether the conversion is
+                // valid
+                if (typecast_functions.find(pair<Type, Type>(
+                        res.from, res.to)) == typecast_functions.end()) {
+                    throw_type_error(INVALID_CONVERSION, res.from, res.to,
+                                     *this);
                 }
-                res.typecast_function  = typecast_functions[pair<Type, Type>(res.from, res.to)];
+                res.typecast_function =
+                    typecast_functions[pair<Type, Type>(res.from, res.to)];
 
                 if (this->current_token.token_type != TT_CLOSING_PARENTHESIS) {
                     throw_error(EXPECTED_CLOSING_PARENTHESIS, *this);
@@ -307,21 +313,23 @@ SecondClass Parser::parse_factor(Type expected_type) {
                 return res;
             } else {
                 // invalid type
-                throw_type_error(TYPE_NOT_DEFINED, BASE_TYPE_INVALID(1), Type(0, this->current_token.value, DIM(1)), *this);
+                throw_type_error(TYPE_NOT_DEFINED, BASE_TYPE_INVALID(1),
+                                 Type(0, this->current_token.value, DIM(1)),
+                                 *this);
             }
         } else {
             // if this is even allowed
             if (this->dont_allow_parenthesis) {
-                this->token_pos = pos-2;
+                this->token_pos = pos - 2;
                 this->advance();
 
                 throw_error(EXPRESSION_IN_PARENTHESIS_NOT_ALLOWED, *this);
             }
 
             // no arrow, evaluate expression normally again
-            this->token_pos = pos-1;
+            this->token_pos = pos - 1;
             this->advance();
-            
+
             SecondClass expr = this->parse_second_class(expected_type);
 
             if (this->current_token.token_type != TT_CLOSING_PARENTHESIS) {
@@ -333,7 +341,8 @@ SecondClass Parser::parse_factor(Type expected_type) {
         }
     }
 
-    // No Factor was provided but expected. I.e.: Second class expression was expected
+    // No Factor was provided but expected. I.e.: Second class expression was
+    // expected
     throw_error(EXPECTED_SECOND_CLASS_EXPRESSION, *this);
     return SecondClass();
 }

@@ -255,28 +255,40 @@ void throw_error(int err_code, Parser state) {
                         EXPECTED_COMMA_IN_FUNCTION_CALL_LINK, s, state);
     } break;
     case EXPECTED_CLOSING_PARENTHESIS: {
-        s = "Expected a closing parenthesis in expression surrounded with parenthesis";
-        print_std_error(EXPECTED_CLOSING_PARENTHESIS, EXPECTED_CLOSING_PARENTHESIS_LINK, s, state);
+        s = "Expected a closing parenthesis in expression surrounded with "
+            "parenthesis";
+        print_std_error(EXPECTED_CLOSING_PARENTHESIS,
+                        EXPECTED_CLOSING_PARENTHESIS_LINK, s, state);
     } break;
     case STANDALONE_REFFERENCE_TO_VARIABLE_NOT_ALLOWED: {
-        s = "Found a stand-alone refference to a variable. Did you mean to re-assign it?";
-        print_std_error(STANDALONE_REFFERENCE_TO_VARIABLE_NOT_ALLOWED, STANDALONE_REFFERENCE_TO_VARIABLE_NOT_ALLOWED_LINK, s, state);
+        s = "Found a stand-alone refference to a variable. Did you mean to "
+            "re-assign it?";
+        print_std_error(STANDALONE_REFFERENCE_TO_VARIABLE_NOT_ALLOWED,
+                        STANDALONE_REFFERENCE_TO_VARIABLE_NOT_ALLOWED_LINK, s,
+                        state);
     } break;
     case EXPECTED_SECOND_CLASS_EXPRESSION: {
         s = "Expected a Second-class-expression but none was found";
-        print_std_error(EXPECTED_SECOND_CLASS_EXPRESSION, EXPECTED_SECOND_CLASS_EXPRESSION_LINK, s, state);
+        print_std_error(EXPECTED_SECOND_CLASS_EXPRESSION,
+                        EXPECTED_SECOND_CLASS_EXPRESSION_LINK, s, state);
     } break;
     case UNKNOWN_IDENTIFIER_IN_EXPRESSION: {
-        s = "An unknown identifier was encountered in an expression. Is the Variable/Function you are refferencing not in scope?";
-        print_std_error(UNKNOWN_IDENTIFIER_IN_EXPRESSION, UNKNOWN_IDENTIFIER_IN_EXPRESSION_LINK, s, state);
+        s = "An unknown identifier was encountered in an expression. Is the "
+            "Variable/Function you are refferencing not in scope?";
+        print_std_error(UNKNOWN_IDENTIFIER_IN_EXPRESSION,
+                        UNKNOWN_IDENTIFIER_IN_EXPRESSION_LINK, s, state);
     } break;
     case UNKNOWN_TYPE_IN_ASSIGNMENT: {
         s = "The type you refferenced in the assignment is not defined";
-        print_std_error(UNKNOWN_TYPE_IN_ASSIGNMENT, UNKNOWN_TYPE_IN_ASSIGNMENT_LINK, s, state);
+        print_std_error(UNKNOWN_TYPE_IN_ASSIGNMENT,
+                        UNKNOWN_TYPE_IN_ASSIGNMENT_LINK, s, state);
     } break;
     case UNKNOWN_FIRST_CLASS_IDENTIFIER: {
-        s = "At the beginning of this statement, the Keyword/Variable/Function refferenced does not exist. Is the function or variable not in scope?";
-        print_std_error(UNKNOWN_FIRST_CLASS_IDENTIFIER, UNKNOWN_FIRST_CLASS_IDENTIFIER_LINK, s, state);
+        s = "At the beginning of this statement, the Keyword/Variable/Function "
+            "refferenced does not exist. Is the function or variable not in "
+            "scope?";
+        print_std_error(UNKNOWN_FIRST_CLASS_IDENTIFIER,
+                        UNKNOWN_FIRST_CLASS_IDENTIFIER_LINK, s, state);
     } break;
     }
 }
@@ -292,8 +304,8 @@ void throw_compiler_error(int err_code) {
 }
 
 void throw_type_error(int err_code, Type expected, Type was, Parser state) {
-    string expected_dimension="(";
-    string was_dimension="(";
+    string expected_dimension = "(";
+    string was_dimension = "(";
 
     for (auto i : expected.dimensions) {
         expected_dimension += to_string(i) += " x ";
@@ -311,15 +323,16 @@ void throw_type_error(int err_code, Type expected, Type was, Parser state) {
     string was_type_name = (was.base_type == 0)
                                ? was.custom_type
                                : enum_type_to_token_value[was.base_type];
-    string expected_type_name = (expected.base_type == 0)
-                                    ? expected.custom_type
-                                    : enum_type_to_token_value[expected.base_type];
+    string expected_type_name =
+        (expected.base_type == 0)
+            ? expected.custom_type
+            : enum_type_to_token_value[expected.base_type];
 
     string s;
     switch (err_code) {
     case TYPES_NOT_CONSISTENT: {
-        s = "Types " + expected_type_name + expected_dimension +
-            " and " + was_type_name + was_dimension +
+        s = "Types " + expected_type_name + expected_dimension + " and " +
+            was_type_name + was_dimension +
             " are not consistent! (one can not be unexplicitly cast into the "
             "other)";
         print_std_error(TYPES_NOT_CONSISTENT, TYPES_NOT_CONSISTENT_LINK, s,
@@ -331,11 +344,13 @@ void throw_type_error(int err_code, Type expected, Type was, Parser state) {
                         PREFIX_NOT_DEFINED_FOR_TYPE_LINK, s, state);
     } break;
     case INVALID_CONVERSION: {
-        s = "There does not exist a conversion function from " + expected_type_name + expected_dimension + " to " + was_type_name + was_dimension;
+        s = "There does not exist a conversion function from " +
+            expected_type_name + expected_dimension + " to " + was_type_name +
+            was_dimension;
         print_std_error(INVALID_CONVERSION, INVALID_CONVERSION_LINK, s, state);
     } break;
     case TYPE_NOT_DEFINED: {
-        s = "Type: " + was_type_name+was_dimension + "is not defined";
+        s = "Type: " + was_type_name + was_dimension + "is not defined";
         print_std_error(TYPE_NOT_DEFINED, TYPE_NOT_DEFINED_LINK, s, state);
     } break;
     }
